@@ -14,6 +14,17 @@ import PerfilAcompPage from "./pages/Client/PerfilAcompPage";
 import PerfilClientePage from "./pages/Client/PerfilClientePage";
 import Error404 from "./errors/Error404";
 
+import LoginAdminPage from "./Pages/Admin/Login/Login";
+import DashboardAdminPage from "./Pages/Admin/Dashboard/Dashboard";
+import ProdutosAdminPage from "./Pages/Admin/Dashboard/Produtos";
+import CadastroProdutoPage from "./Pages/Admin/Dashboard/CadastroProdutos";
+import EditarProdutoPage from "./Pages/Admin/Dashboard/EditarAcompanhante";
+import CadastroVendaPage from "./Pages/Admin/Dashboard/CadastroVendas";
+import VendasPage from "./Pages/Admin/Dashboard/Vendas";
+import EditarVendaPage from "./Pages/Admin/Dashboard/EditarVendas";
+import ClientesAdminPage from "./Pages/Admin/Dashboard/Clientes";
+import BlogAdiminPage from "./Pages/Admin/Dashboard/Blog";
+
 export default function AppRouter() {
   return (
     <Router>
@@ -31,6 +42,20 @@ export default function AppRouter() {
         <Route path="/perfil/acompanhante" element={<PerfilAcompPage />} />
         <Route path="/perfil" element={<PerfilClientePage />} />
         <Route path="/test" element={<Test />} />
+
+        <Route path="/admin" element={<LoginAdminPage />} />
+        <Route path="/admindash" element={<DashboardAdminPage />} />
+        <Route path="/admin-acompanhantes" element={<ProdutosAdminPage />} />
+        <Route path="/admin-blog" element={<BlogAdiminPage />} />
+        <Route path="/clientes" element={<ClientesAdminPage />} />
+        <Route path="/vendas" element={<VendasPage />} />
+        <Route path="/cadastro-produto" element={<CadastroProdutoPage />} />
+        <Route path="/cadastro-venda" element={<CadastroVendaPage />} />
+        <Route
+          path="/editar-acompanhante/:id"
+          element={<EditarProdutoPage />}
+        />
+        <Route path="/editar-venda/:id" element={<EditarVendaPage />} />
       </Routes>
     </Router>
   );
