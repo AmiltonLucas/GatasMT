@@ -11,7 +11,7 @@ export default function Contatenos() {
           </h2>
 
           {/* Formulário */}
-          <form className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-5xl mx-auto">
+          <form className="flex flex-col lg:flex-row items-center justify-center gap-4 max-w-4xl mx-auto">
             <input
               type="text"
               placeholder="Nome"
