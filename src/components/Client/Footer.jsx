@@ -11,7 +11,7 @@ const COLORS = {
 
 export default function Footer() {
   return (
-    <footer className={`${COLORS.bg} py-12`}>
+    <footer className={`${COLORS.bg} py-12 hidden lg:flex`}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>

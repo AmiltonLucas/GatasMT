@@ -96,6 +96,8 @@ import {
   FaGlobe,
   FaBars,
   FaTimes,
+  FaCog,
+  FaChevronDown,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -103,6 +105,7 @@ export default function SidebarMenu() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState("");
+  const [layoutDropdown, setLayoutDropdown] = useState(false);
 
   // Pega usuário do localStorage
   useEffect(() => {
@@ -122,6 +125,16 @@ export default function SidebarMenu() {
     localStorage.removeItem("email");
     navigate("/admin"); // redireciona para login
   };
+
+  // Opções de layout
+  const layoutOptions = [
+    { label: "Alterar Navbar", href: "/admin/alterar-navbar" },
+    { label: "Alterar Hero", href: "/admin/alterar-hero" },
+    { label: "Alterar Footer", href: "/admin/alterar-footer" },
+    { label: "Alterar Blog", href: "/admin/alterar-blog" },
+    { label: "Alterar Acompanhantes", href: "/admin/alterar-acompanhantes" },
+    { label: "Alterar Destacados", href: "/admin/alterar-destacados" },
+  ];
 
   // Conteúdo do menu
   const menuContent = (
@@ -147,6 +160,36 @@ export default function SidebarMenu() {
         >
           <FaGlobe /> Ir para o site
         </a>
+
+        {/* Dropdown Alterar Layout */}
+        <div className="relative">
+          <button
+            onClick={() => setLayoutDropdown(!layoutDropdown)}
+            className="flex items-center gap-2 text-rose-500 hover:text-blue-500 hover:underline font-semibold w-full"
+          >
+            <FaCog /> Alterar Layout
+            <FaChevronDown
+              className={`ml-auto text-sm transition-transform ${
+                layoutDropdown ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {layoutDropdown && (
+            <div className="absolute left-0 top-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-56 z-50">
+              {layoutOptions.map((option, idx) => (
+                <a
+                  key={idx}
+                  href={option.href}
+                  onClick={() => setLayoutDropdown(false)}
+                  className="block px-4 py-2 text-rose-500 hover:bg-rose-100 hover:text-rose-700 transition first:rounded-t-lg last:rounded-b-lg"
+                >
+                  {option.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+
         <button
           className="flex items-center gap-2 text-rose-500 hover:text-blue-500 hover:underline"
           onClick={() => navigate("/alterar-senha")}

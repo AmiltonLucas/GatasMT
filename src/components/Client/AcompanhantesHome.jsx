@@ -4,6 +4,9 @@ import Mulher from "../../assets/Mulher.png";
 import Mulher2 from "../../assets/Mulher2.png";
 import Mulher3 from "../../assets/Mulher3.png";
 import Mulher4 from "../../assets/Mulher4.png";
+import Mulher5 from "../../assets/Mulher5.png";
+import Mulher6 from "../../assets/Mulher6.png";
+import Mulher7 from "../../assets/Mulher7.png";
 
 const COLORS = {
   // dark theme
@@ -15,7 +18,11 @@ const COLORS = {
   cardBg: "bg-slate-800",
 };
 
-export default function Acompanhantes({ items = null, onChat, onWhatsApp }) {
+export default function AcompanhantesHome({
+  items = null,
+  onChat,
+  onWhatsApp,
+}) {
   const sample = [
     {
       id: 1,
@@ -67,7 +74,7 @@ export default function Acompanhantes({ items = null, onChat, onWhatsApp }) {
       name: "Fernanda Lima",
       city: "Brasília, DF",
       price: "R$ 360",
-      photo: Mulher2,
+      photo: Mulher5,
       rating: 4.8,
       reviews: 110,
     },
@@ -76,54 +83,18 @@ export default function Acompanhantes({ items = null, onChat, onWhatsApp }) {
       name: "Carolina Oliveira",
       city: "Fortaleza, CE",
       price: "R$ 290",
-      photo: Mulher3,
+      photo: Mulher6,
       rating: 4.5,
       reviews: 76,
     },
     {
-      id: 8,
-      name: "Beatriz Alves",
-      city: "Manaus, AM",
-      price: "R$ 330",
-      photo: Mulher4,
-      rating: 4.7,
-      reviews: 95,
-    },
-    {
-      id: 9,
-      name: "Gabriela Martins",
-      city: "Recife, PE",
-      price: "R$ 310",
-      photo: Mulher,
-      rating: 4.8,
-      reviews: 142,
-    },
-    {
-      id: 10,
-      name: "Vanessa Gomes",
-      city: "Porto Alegre, RS",
-      price: "R$ 370",
-      photo: Mulher2,
-      rating: 4.9,
-      reviews: 167,
-    },
-    {
-      id: 11,
-      name: "Sophia Ribeiro",
-      city: "Belém, PA",
-      price: "R$ 280",
-      photo: Mulher3,
-      rating: 4.6,
-      reviews: 83,
-    },
-    {
-      id: 12,
-      name: "Amanda Carvalho",
-      city: "Goiânia, GO",
-      price: "R$ 340",
-      photo: Mulher4,
-      rating: 4.7,
-      reviews: 119,
+      id: 7,
+      name: "Carolina Oliveira",
+      city: "Fortaleza, CE",
+      price: "R$ 290",
+      photo: Mulher7,
+      rating: 4.5,
+      reviews: 76,
     },
   ];
 
@@ -289,6 +260,16 @@ export default function Acompanhantes({ items = null, onChat, onWhatsApp }) {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Ver Mais Button */}
+      <div className="flex justify-center py-8">
+        <a
+          href="/acompanhantes"
+          className="px-8 py-3 bg-rose-600 text-white font-bold rounded-lg hover:bg-rose-700 transition shadow-lg"
+        >
+          Ver Mais Acompanhantes
+        </a>
       </div>
     </section>
   );

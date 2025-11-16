@@ -4,6 +4,7 @@ import Navbar from "../../components/Client/Navbar";
 import NavbarBottom from "../../components/Client/NavbarBottom";
 import Footer from "../../components/Client/Footer";
 import BannerCarousel from "../../components/Client/BannerCarousel";
+import Filtro from "../../components/Client/Filtro";
 
 export default function AcompPage() {
   return (
@@ -11,6 +12,7 @@ export default function AcompPage() {
       <NavbarBottom />
       <Navbar />
       <BannerCarousel />
+      <Filtro />
       <Acompanhantes />
       <Footer />    
     </>

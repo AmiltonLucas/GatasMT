@@ -27,7 +27,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Botão de abrir/fechar menu (mobile) */}
         <div className="flex items-center gap-3">
-          <button
+          {/* <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="p-2 md:hidden transition hover:opacity-80"
             aria-label="Abrir menu"
@@ -37,7 +37,7 @@ export default function Navbar() {
             ) : (
               <Menu className="w-6 h-6" />
             )}
-          </button>
+          </button> */}
 
           {/* Logo */}
           <h1 className={`text-xl font-bold tracking-wide ${COLORS.accent}`}>
@@ -72,12 +72,11 @@ export default function Navbar() {
             <Bell className="w-5 h-5" />
           </button>
         </div>
-
-        {/* Small helper for alignment on mobile */}
-        <div className="md:hidden" />
+        {/* Small helper for alignment on mobile
+        <div className="md:hidden" /> */}
       </div>
 
-      {/* Overlay (fundo escuro) */}
+      {/* Overlay (fundo escuro)
       <div
         className={`fixed top-0 left-0 w-full h-full ${
           COLORS.overlay
@@ -85,9 +84,9 @@ export default function Navbar() {
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={() => setMenuOpen(false)}
-      ></div>
+      ></div> */}
 
-      {/* Menu lateral */}
+      {/* Menu lateral
       <div
         className={`fixed top-0 left-0 h-full w-64 ${
           COLORS.panelBg
@@ -146,7 +145,7 @@ export default function Navbar() {
             </a>
           </div>
         </div>
-      </div>
+      </div> */}
     </nav>
   );
 }

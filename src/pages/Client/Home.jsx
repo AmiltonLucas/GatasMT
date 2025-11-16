@@ -2,14 +2,13 @@ import React from "react";
 import NavbarBottom from "../../components/Client/NavbarBottom";
 import Navbar from "../../components/Client/Navbar";
 import Hero from "../../components/Client/Hero";
-import LinksPopular from "../../components/Client/Links";
 import Seguranca from "../../components/Client/Seguranca";
 import Footer from "../../components/Client/Footer";
-import Etnias from "../../components/Client/Etnias";
 import FeaturedDestaques from "../../components/Client/FeaturedDestaques";
-import Avaliacoes from "../../components/Client/Avaliacoes";
+// import Avaliacoes from "../../components/Client/Avaliacoes";
 import Contatenos from "../../components/Client/Contatenos";
 import BlogSection from "../../components/Client/Blog";
+import AcompanhantesHome from "../../components/Client/AcompanhantesHome";
 
 export default function Home() {
   return (
@@ -17,10 +16,9 @@ export default function Home() {
       <NavbarBottom />
       <Navbar />
       <Hero />
-      <Etnias />
-      <LinksPopular />
       <FeaturedDestaques />
-      <Avaliacoes />
+      <AcompanhantesHome />
+      {/* <Avaliacoes /> */}
       <Seguranca />
       <Contatenos />
       <BlogSection />

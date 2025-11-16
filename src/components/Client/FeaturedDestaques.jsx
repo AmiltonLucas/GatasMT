@@ -6,8 +6,52 @@ import Mulher4 from "../../assets/Mulher4.png";
 import Mulher5 from "../../assets/Mulher5.png";
 import Mulher6 from "../../assets/Mulher6.png";
 import Mulher7 from "../../assets/Mulher7.png";
+import { FaLink, FaWhatsapp } from "react-icons/fa";
 
-const SAMPLE = [Mulher, Mulher2, Mulher3, Mulher4, Mulher5, Mulher6, Mulher7];
+const SAMPLE = [
+  {
+    img: Mulher,
+    name: "Ana",
+    profile: "/perfil/ana",
+    whatsapp: "5511999999999",
+  },
+  {
+    img: Mulher2,
+    name: "Bia",
+    profile: "/perfil/bia",
+    whatsapp: "5511988888888",
+  },
+  {
+    img: Mulher3,
+    name: "Camila",
+    profile: "/perfil/camila",
+    whatsapp: "5511977777777",
+  },
+  {
+    img: Mulher4,
+    name: "Duda",
+    profile: "/perfil/duda",
+    whatsapp: "5511966666666",
+  },
+  {
+    img: Mulher5,
+    name: "Evelyn",
+    profile: "/perfil/evelyn",
+    whatsapp: "5511955555555",
+  },
+  {
+    img: Mulher6,
+    name: "Fabia",
+    profile: "/perfil/fabia",
+    whatsapp: "5511944444444",
+  },
+  {
+    img: Mulher7,
+    name: "Gabriela",
+    profile: "/perfil/gabriela",
+    whatsapp: "5511933333333",
+  },
+];
 
 export default function FeaturedDestaques({ items = SAMPLE, interval = 5000 }) {
   const slotCount = 5;
@@ -107,26 +151,96 @@ export default function FeaturedDestaques({ items = SAMPLE, interval = 5000 }) {
     return () => clearInterval(id);
   }, [items, interval]);
 
+  const shareProfile = async (profile, name) => {
+    const shareData = {
+      title: `Perfil de ${name}`,
+      text: `Veja o perfil de ${name}`,
+      url: profile,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(profile);
+        alert("Link copiado para a área de transferência");
+      } else {
+        prompt("Copie o link abaixo:", profile);
+      }
+    } catch (err) {
+      // silencioso
+    }
+  };
+
+  const openWhatsApp = (whatsapp, name) => {
+    if (!whatsapp) return;
+    const phone = whatsapp.replace(/[^0-9+]/g, "");
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(
+      `Olá ${name}, encontrei seu perfil no site e gostaria de conversar.`
+    )}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <section className="py-8 bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-2xl font-bold text-white mb-6">
-          Acompanhantes em destaque
+        <h2 className="text-2xl font-bold text-white mb-6 text-center">
+          Nossas modelos em destaque
         </h2>
 
         {/* Mobile: single photo rotator */}
         <div className="md:hidden">
-          <div className="relative w-full h-64 rounded-lg overflow-hidden">
-            <img
-              src={getSrc(items[mobileIndex])}
-              alt={`Destaque ${mobileIndex + 1}`}
-              className="w-full h-full object-cover transition-opacity duration-700 ease-in-out"
-            />
-            {/* Optional overlay with name or CTA */}
-            <div className="absolute bottom-3 left-3 bg-black/40 text-white px-3 py-1 rounded text-sm">
-              Destaque {mobileIndex + 1}
+          {items[mobileIndex] && (
+            <div
+              className="relative w-full h-64 rounded-lg overflow-hidden cursor-pointer"
+              onClick={() =>
+                (window.location.href = items[mobileIndex].profile)
+              }
+            >
+              <img
+                src={getSrc(items[mobileIndex])}
+                alt={`Destaque ${mobileIndex + 1}`}
+                className="w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
+                <div className="w-full flex items-center justify-between px-3 py-3 text-white">
+                  <div className="text-sm font-semibold">
+                    {items[mobileIndex].name}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openWhatsApp(
+                          items[mobileIndex].whatsapp,
+                          items[mobileIndex].name
+                        );
+                      }}
+                      className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center"
+                      aria-label="WhatsApp"
+                    >
+                      {/* simple whatsapp icon*/}
+                      <FaWhatsapp className="text-green-500" />
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        shareProfile(
+                          items[mobileIndex].profile,
+                          items[mobileIndex].name
+                        );
+                      }}
+                      className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center"
+                      aria-label="Compartilhar perfil"
+                    >
+                      <FaLink className="text-white" />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Desktop: collage grid (1 large left + 4 à direita em 2x2) */}
@@ -166,9 +280,45 @@ export default function FeaturedDestaques({ items = SAMPLE, interval = 5000 }) {
                   }`}
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                  <div className="w-full text-center py-3 text-white font-semibold">
-                    Destaque {i + 1}
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end"
+                  onClick={() => {
+                    const it = items[slotIdx];
+                    if (it && it.profile) window.location.href = it.profile;
+                  }}
+                >
+                  <div className="w-full flex items-center justify-between px-3 py-3 text-white font-semibold">
+                    <div>{items[slotIdx]?.name || `Destaque ${i + 1}`}</div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openWhatsApp(
+                            items[slotIdx]?.whatsapp,
+                            items[slotIdx]?.name
+                          );
+                        }}
+                        className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center"
+                        aria-label="WhatsApp"
+                      >
+                        {/* simple whatsapp icon*/}
+                      <FaWhatsapp className="text-green-500" />
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          shareProfile(
+                            items[slotIdx]?.profile,
+                            items[slotIdx]?.name
+                          );
+                        }}
+                        className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center"
+                        aria-label="Compartilhar perfil"
+                      >
+                        <FaLink className="text-white"/>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
