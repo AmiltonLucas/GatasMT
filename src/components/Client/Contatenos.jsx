@@ -9,6 +9,31 @@ export default function Contatenos() {
     whatsapp: "",
   });
 
+  // Load default text/settings from localStorage siteSettings.contato
+  const [texts, setTexts] = useState({
+    sectionTitle: "Está pronto para se juntar a nós? Contate-nos!",
+    namePlaceholder: "Nome",
+    emailPlaceholder: "E-mail",
+    whatsappPlaceholder: "WhatsApp",
+    submitButtonText: "Enviar",
+    successTitle: "Enviado com Sucesso!",
+    successMessage:
+      "Obrigado por entrar em contato. Recebemos suas informações e responderemos em breve.",
+    successButtonText: "Fechar",
+  });
+
+  React.useEffect(() => {
+    try {
+      const saved = localStorage.getItem("siteSettings");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.contato) setTexts((t) => ({ ...t, ...parsed.contato }));
+      }
+    } catch (err) {
+      // ignore
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -42,7 +67,7 @@ export default function Contatenos() {
             <input
               type="text"
               name="name"
-              placeholder="Nome"
+              placeholder={texts.namePlaceholder}
               value={formData.name}
               onChange={handleInputChange}
               required
@@ -51,7 +76,7 @@ export default function Contatenos() {
             <input
               type="email"
               name="email"
-              placeholder="E-mail"
+              placeholder={texts.emailPlaceholder}
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -60,7 +85,7 @@ export default function Contatenos() {
             <input
               type="text"
               name="whatsapp"
-              placeholder="WhatsApp"
+              placeholder={texts.whatsappPlaceholder}
               value={formData.whatsapp}
               onChange={handleInputChange}
               required
@@ -70,7 +95,7 @@ export default function Contatenos() {
               type="submit"
               className="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition-all duration-300 cursor-pointer"
             >
-              Enviar
+              {texts.submitButtonText}
             </button>
           </form>
         </div>
@@ -101,11 +126,10 @@ export default function Contatenos() {
 
             {/* Título e mensagem */}
             <h3 className="text-2xl font-bold text-center text-gray-900 mb-2">
-              Enviado com Sucesso!
+              {texts.successTitle}
             </h3>
             <p className="text-center text-gray-600 mb-8">
-              Obrigado por entrar em contato. Recebemos suas informações e
-              responderemos em breve.
+              {texts.successMessage}
             </p>
 
             {/* Botão fechar */}
@@ -113,7 +137,7 @@ export default function Contatenos() {
               onClick={closeModal}
               className="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3 rounded-lg transition-all duration-300"
             >
-              Fechar
+              {texts.successButtonText}
             </button>
 
             {/* Botão X no canto */}

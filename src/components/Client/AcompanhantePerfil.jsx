@@ -1,5 +1,4 @@
-import React from "react";
-import banner from "../../assets/Banner.png";
+import React, { useRef, useEffect, useState } from "react";
 import photo from "../../assets/Mulher.png";
 import photo2 from "../../assets/Mulher2.png";
 import photo3 from "../../assets/Mulher3.png";
@@ -81,7 +80,6 @@ export default function AcompanhantePerfil({
   const p = profile || {
     id: 1,
     name: "Mariana Silva",
-    banner: banner,
     photo: photo,
     price: "R$ 400",
     city: "São Paulo, SP",
@@ -106,6 +104,87 @@ export default function AcompanhantePerfil({
     gallery: [photo2, photo3, photo4],
   };
 
+  // imagens para o carrossel (inclui foto principal + galeria)
+  const carouselImages = [p.photo, ...(p.gallery || [])];
+  const trackRef = useRef(null);
+  const rafRef = useRef(null);
+  const posRef = useRef(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    const node = trackRef.current;
+    if (!node) return;
+
+    const measureAndStart = () => {
+      cancelAnimationFrame(rafRef.current);
+      posRef.current = 0;
+
+      // pega todos os filhos (imagens)
+      const children = Array.from(node.children || []);
+      const N = Math.floor(children.length / 2); // metade → primeira sequência
+
+      // calcula largura da primeira sequência
+      let singleWidth = 0;
+      for (let i = 0; i < N; i++) {
+        singleWidth += children[i]?.offsetWidth || 0;
+      }
+      if (!singleWidth) return;
+
+      const speed = 100; // px/s
+      let last = performance.now();
+
+      const step = (now) => {
+        const dt = (now - last) / 1000;
+        last = now;
+
+        posRef.current += speed * dt;
+
+        // LOOP INFINITO
+        if (posRef.current >= singleWidth) {
+          posRef.current -= singleWidth; // teleporta pro começo da sequência
+        }
+
+        node.style.transform = `translate3d(-${posRef.current}px,0,0)`;
+        rafRef.current = requestAnimationFrame(step);
+      };
+
+      rafRef.current = requestAnimationFrame(step);
+      setIsRunning(true);
+    };
+
+    // aguardar imagens carregarem
+    const imgs = Array.from(node.querySelectorAll("img"));
+    let loaded = 0;
+
+    if (imgs.length === 0) {
+      measureAndStart();
+    } else {
+      const onLoad = () => {
+        loaded += 1;
+        if (loaded >= imgs.length) measureAndStart();
+      };
+
+      imgs.forEach((img) => {
+        if (img.complete) onLoad();
+        else img.addEventListener("load", onLoad, { once: true });
+      });
+    }
+
+    // recalcular ao redimensionar
+    const onResize = () => {
+      cancelAnimationFrame(rafRef.current);
+      setIsRunning(false);
+      setTimeout(measureAndStart, 150);
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [carouselImages]);
+
   const handleChat = () => onChat?.(p);
   const handleWhatsApp = () =>
     onWhatsApp?.(p) ||
@@ -113,80 +192,107 @@ export default function AcompanhantePerfil({
 
   return (
     <div className="bg-[#0a0a0a]">
-      <div className="min-h-screen bg-[#0a0a0a] mt-[4.7rem]">
-        {/* Banner */}
-        <div className="relative">
-          <div className="h-36 md:h-44 w-full overflow-hidden bg-slate-800">
-            <img
-              src={p.banner}
-              alt={`${p.name} banner`}
-              className="w-full h-full object-cover"
-            />
+      <div className="min-h-screen bg-[#0a0a0a] pt-[6rem] ">
+        {/* Carrossel contínuo de fotos (loop infinito) */}
+        <div className="w-full overflow-hidden py-4">
+          {/* base styling para track e items (sem gaps) */}
+          <style>{`.acomp-carousel-track{display:flex;gap:0;align-items:center;white-space:nowrap}.acomp-carousel-track img{display:block}`}</style>
+          {/* keyframe dinâmico (não usado - RAF driven) */}
+          <div>
+            <div
+              ref={trackRef}
+              className="acomp-carousel-track"
+              style={{ willChange: "transform" }}
+            >
+              {[...Array(4)].flatMap(() => carouselImages).map((src, i) => (
+                <div
+                  key={i}
+                  className="acomp-item"
+                  style={{ flexShrink: 0, margin: 0 }}
+                >
+                  <img
+                    src={src}
+                    alt={`foto-${i}`}
+                    style={{
+                      width: 220,
+                      height: 420,
+                      objectFit: "cover",
+                      display: "block",
+                      borderRadius: 12,
+                      willChange: "transform",
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                      transform: "translateZ(0)",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
 
-          {/* Photo */}
-          <div className="max-w-7xl mx-auto px-6 -mt-12">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6">
-              <div className="w-36 h-36 md:w-40 md:h-40 rounded-xl overflow-hidden bg-slate-800 shadow-lg border-4 border-slate-900">
-                <img
-                  src={p.photo}
-                  alt={p.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+        {/* Photo header. Mobile centralizado, desktop à esquerda */}
+        <div className="max-w-7xl mx-auto px-6 mt-8">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-6">
+            <div className="w-36 h-36 md:w-40 md:h-40 rounded-xl overflow-hidden bg-slate-800 shadow-lg border-4 border-slate-900">
+              <img
+                src={p.photo}
+                alt={p.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-              <div className="flex-1">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h1
-                      className={`text-2xl font-extrabold ${COLORS.title} text-center md:text-left`}
-                    >
-                      {p.name}
-                    </h1>
-                    <div
-                      className={`text-sm ${COLORS.muted} text-center md:text-left`}
-                    >
-                      {p.city} • {p.address}
-                    </div>
-                    <div className="mt-2 flex items-center gap-3 justify-center md:justify-start">
-                      <div
-                        className={`text-lg font-bold text-rose-400 text-center`}
-                      >
-                        {p.price}
-                      </div>
-                      <div className={`text-sm ${COLORS.muted}`}>
-                        {p.hours} • Atendimento
-                      </div>
-                    </div>
+            <div className="flex-1">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h1
+                    className={`text-2xl font-extrabold ${COLORS.title} text-center md:text-left`}
+                  >
+                    {p.name}
+                  </h1>
+                  <div
+                    className={`text-sm ${COLORS.muted} text-center md:text-left`}
+                  >
+                    {p.city} • {p.address}
                   </div>
-
-                  <div className="flex flex-col md:items-end items-center gap-3 w-full md:w-auto">
-                    <button
-                      onClick={handleChat}
-                      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full ${COLORS.accent} ${COLORS.accentText} shadow-sm w-full md:w-auto`}
+                  <div className="mt-2 flex items-center gap-3 justify-center md:justify-start">
+                    <div
+                      className={`text-lg font-bold text-rose-400 text-center`}
                     >
-                      <MessageCircle className="w-4 h-4" /> Chat
-                    </button>
-                    <button
-                      onClick={handleWhatsApp}
-                      className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-green-500 text-white shadow-sm w-full md:w-auto"
-                    >
-                      <Phone className="w-4 h-4" /> WhatsApp
-                    </button>
+                      {p.price}
+                    </div>
+                    <div className={`text-sm ${COLORS.muted}`}>
+                      {p.hours} • Atendimento
+                    </div>
                   </div>
                 </div>
 
-                {/* Rating */}
-                <div className="mt-4 flex items-center gap-2 justify-center md:justify-start">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-amber-400" />
-                    <strong className={`text-sm ${COLORS.title}`}>
-                      {p.rating}
-                    </strong>
-                  </div>
-                  <div className={`text-sm ${COLORS.muted}`}>
-                    ({p.reviews.length} avaliações)
-                  </div>
+                <div className="flex flex-col md:items-end items-center gap-3 w-full md:w-auto">
+                  <button
+                    onClick={handleChat}
+                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full ${COLORS.accent} ${COLORS.accentText} shadow-sm w-full md:w-auto`}
+                  >
+                    <MessageCircle className="w-4 h-4" /> Chat
+                  </button>
+                  <button
+                    onClick={handleWhatsApp}
+                    className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-green-500 text-white shadow-sm w-full md:w-auto"
+                  >
+                    <Phone className="w-4 h-4" /> WhatsApp
+                  </button>
+                </div>
+              </div>
+
+              {/* Rating */}
+              <div className="mt-4 flex items-center gap-2 justify-center md:justify-start">
+                <div className="flex items-center gap-1">
+                  <Star className="w-4 h-4 text-amber-400" />
+                  <strong className={`text-sm ${COLORS.title}`}>
+                    {p.rating}
+                  </strong>
+                </div>
+                <div className={`text-sm ${COLORS.muted}`}>
+                  ({p.reviews.length} avaliações)
                 </div>
               </div>
             </div>

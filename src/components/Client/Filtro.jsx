@@ -62,38 +62,44 @@ export default function Filtro({ onFilterChange, onClear }) {
 
   const handlePriceMinChange = (e) => {
     const value = e.target.value;
-    setFilters({ ...filters, priceMin: value });
-    onFilterChange({ ...filters, priceMin: value });
+    const next = { ...filters, priceMin: value };
+    setFilters(next);
+    onFilterChange?.(next);
   };
 
   const handlePriceMaxChange = (e) => {
     const value = e.target.value;
-    setFilters({ ...filters, priceMax: value });
-    onFilterChange({ ...filters, priceMax: value });
+    const next = { ...filters, priceMax: value };
+    setFilters(next);
+    onFilterChange?.(next);
   };
 
   const handleCityChange = (e) => {
     const value = e.target.value;
-    setFilters({ ...filters, city: value, neighborhood: "" });
-    onFilterChange({ ...filters, city: value, neighborhood: "" });
+    const next = { ...filters, city: value, neighborhood: "" };
+    setFilters(next);
+    onFilterChange?.(next);
   };
 
   const handleNeighborhoodChange = (e) => {
     const value = e.target.value;
-    setFilters({ ...filters, neighborhood: value });
-    onFilterChange({ ...filters, neighborhood: value });
+    const next = { ...filters, neighborhood: value };
+    setFilters(next);
+    onFilterChange?.(next);
   };
 
   const handleRatingChange = (e) => {
     const value = e.target.value;
-    setFilters({ ...filters, rating: value });
-    onFilterChange({ ...filters, rating: value });
+    const next = { ...filters, rating: value };
+    setFilters(next);
+    onFilterChange?.(next);
   };
 
   const handleSortChange = (e) => {
     const value = e.target.value;
-    setFilters({ ...filters, sortBy: value });
-    onFilterChange({ ...filters, sortBy: value });
+    const next = { ...filters, sortBy: value };
+    setFilters(next);
+    onFilterChange?.(next);
   };
 
   const handleClearFilters = () => {
@@ -106,15 +112,12 @@ export default function Filtro({ onFilterChange, onClear }) {
       sortBy: "relevance",
     };
     setFilters(emptyFilters);
-    onClear();
+    onClear?.();
   };
 
-  const hasActiveFilters =
-    filters.priceMin ||
-    filters.priceMax ||
-    filters.city ||
-    filters.neighborhood ||
-    filters.rating;
+  const hasActiveFilters = Object.values(filters).some(
+    (v) => v && v !== "relevance"
+  );
 
   return (
     <div className="w-full bg-[#0a0a0a] py-6 px-4 md:px-10">
@@ -142,7 +145,7 @@ export default function Filtro({ onFilterChange, onClear }) {
 
         {/* DESKTOP - Sempre visível */}
         <div className="hidden md:block">
-          <div className="grid grid-cols-1 lg:grid-cols-6 gap-4">
+          <div className="flex flex-col-reverse gap-4">
             {/* Preço Mínimo */}
             <div className="space-y-2">
               <label className="text-white text-sm font-medium">
@@ -258,7 +261,7 @@ export default function Filtro({ onFilterChange, onClear }) {
 
         {/* MOBILE - Conversível */}
         {isOpen && (
-          <div className="md:hidden space-y-4 bg-white/5 p-4 rounded-lg border border-white/10">
+          <div className="md:hidden flex flex-col-reverse gap-4 bg-white/5 p-4 rounded-lg border border-white/10">
             {/* Preço Mínimo */}
             <div className="space-y-2">
               <label className="text-white text-sm font-medium">

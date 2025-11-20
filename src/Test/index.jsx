@@ -1,169 +1,747 @@
-import React from "react";
-import MinhaFoto from "../assets/MulherBanner3.png"; // 👈 importe sua imagem
-import { Search as SearchIcon } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { FaSave, FaTimes, FaCheck } from "react-icons/fa";
 
 const COLORS = {
   bg: "bg-[#0a0a0a]",
-  inputBg: "bg-white",
-  border: "border-slate-200",
-  primary: "text-slate-900",
+  card: "bg-slate-800",
+  title: "text-white",
+  muted: "text-white/80",
   accent: "bg-rose-600",
-  accentText: "text-white",
-  muted: "text-slate-400",
+  accentHover: "hover:bg-rose-700",
 };
 
-export default function Test({
-  placeholder = "Buscar acompanhantes, cidades, serviços...",
-  onSearch,
-}) {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const value = e.target.elements.query.value.trim();
-    if (onSearch) onSearch(value);
+export default function AlterarGeral() {
+  const [activeTab, setActiveTab] = useState("navbar");
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  // Navbar settings
+  const [navbar, setNavbar] = useState({
+    logo: "Gatas-MT",
+    // opcional: url da imagem do logo
+    logoImage: "",
+    // layout selecionado: layout-1 | layout-2 | layout-3 | layout-4
+    layout: "layout-1",
+    links: [
+      { label: "Home", href: "/" },
+      { label: "Acompanhantes", href: "/acompanhantes" },
+      { label: "Blog", href: "/blog" },
+      { label: "Contato", href: "/contato" },
+    ],
+    buttonText: "Login",
+    buttonHref: "/login",
+  });
+
+  // Hero settings
+  const [hero, setHero] = useState({
+    title: "Encontre Sua Acompanhante Ideal",
+    subtitle: "Catálogo completo de profissionais qualificadas",
+    cta: "Explorar Acompanhantes",
+    ctaHref: "/acompanhantes",
+  });
+
+  // Footer settings
+  const [footer, setFooter] = useState({
+    company: "Gatas-MT",
+    description: "Plataforma segura e confiável para encontrar acompanhantes",
+    phone: "+55 11 99999-9999",
+    email: "contato@gatas-mt.com",
+    address: "São Paulo, SP - Brasil",
+    socialLinks: [
+      { name: "Facebook", url: "https://facebook.com" },
+      { name: "Instagram", url: "https://instagram.com" },
+      { name: "WhatsApp", url: "https://wa.me" },
+    ],
+  });
+
+  // Blog settings
+  const [blog, setBlog] = useState({
+    title: "Blog Gatas-MT",
+    subtitle: "Dicas, notícias e conteúdo exclusivo",
+    postsPerPage: 6,
+    enableComments: true,
+  });
+
+  // Acompanhantes settings
+  const [acompanhantes, setAcompanhantes] = useState({
+    title: "Nossas Acompanhantes",
+    itemsPerPage: 12,
+    gridColumns: 4,
+    enableFilters: true,
+    enableRating: true,
+  });
+
+  // Load data from localStorage on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("siteSettings");
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      if (data.navbar) setNavbar(data.navbar);
+      if (data.hero) setHero(data.hero);
+      if (data.footer) setFooter(data.footer);
+      if (data.blog) setBlog(data.blog);
+      if (data.acompanhantes) setAcompanhantes(data.acompanhantes);
+    }
+  }, []);
+
+  // Save all settings
+  const handleSave = () => {
+    const allSettings = {
+      navbar,
+      hero,
+      footer,
+      blog,
+      acompanhantes,
+    };
+    localStorage.setItem("siteSettings", JSON.stringify(allSettings));
+    setModalMessage("Configurações salvas com sucesso!");
+    setShowModal(true);
+    setTimeout(() => setShowModal(false), 3000);
   };
 
-  return (
-    <div>
-      <section class="relative bg-[#0a0a0a] pt-8 px-5 pb-10 min-h-[410px] md:pt-[53px] md:pb-10 xl:py-[112px] xl:px-3 xl:min-h-[831px]">
-        <div class="relative w-full mx-auto md:max-w-[574px] xl:px-0 xl:max-w-[1180px] z-2">
-          <h1 class="font-bold text-2xl text-aux-black leading-[29px] max-w-[210px] mb-8 md:max-w-[370px] md:text-[32px] md:leading-10 xl:max-w-[708px] xl:text-[52px] xl:leading-[63px] text-white">
-            A <span class="text-red-500">maior plataforma </span>
-            de acompanhantes do Brasil
-          </h1>
-          <div class="mb-8 md:mb-10 xl:mb-12">
-            <div
-              class="grid gap-2 md:gap-4 xl:gap-3 text-white"
-              data-testid="subtitle-section-home"
-              data-v-ca38152a=""
-            >
-              <h2
-                class="font-semibold gap-y-2 grid text-aux-black text-base leading-4 md:gap-y-4 md:leading-5 md:text-2xl xl:flex xl:gap-x-3 xl:gap-y-0"
-                data-v-ca38152a=""
-              >
-                <span data-v-ca38152a="">
-                  +22 milhões{" "}
-                  <span
-                    class="block font-medium text-xs md:text-xl md:inline md:leading-5"
-                    data-v-ca38152a=""
-                  >
-                    de usuários
-                  </span>
-                </span>
-                <span data-v-ca38152a="">
-                  +70 mil{" "}
-                  <span
-                    class="block font-medium text-xs md:text-xl md:inline md:leading-5"
-                    data-v-ca38152a=""
-                  >
-                    acompanhantes
-                  </span>
-                </span>
-              </h2>
-              <h2
-                class="font-semibold gap-y-2 grid text-aux-black text-base leading-4 md:gap-y-4 md:leading-5 md:text-2xl xl:flex xl:gap-x-3 xl:gap-y-0"
-                data-v-ca38152a=""
-              >
-                <span data-v-ca38152a="">
-                  +1 milhão{" "}
-                  <span
-                    class="block font-medium text-xs md:text-xl md:inline md:leading-5"
-                    data-v-ca38152a=""
-                  >
-                    de vídeos
-                  </span>
-                </span>
-                <span data-v-ca38152a="">
-                  +130 mil{" "}
-                  <span
-                    class="block font-medium text-xs md:text-xl md:inline md:leading-5"
-                    data-v-ca38152a=""
-                  >
-                    avaliações
-                  </span>
-                </span>
-              </h2>
-            </div>
-            <div class="mt-4 md:mt-12 flex flex-col gap-3 md:flex-row">
-              <div class="w-full h-full absolute top-0 left-0 overflow-hidden md:overflow-visible md:max-w-[574px] md:left-1/2 md:-translate-x-2/4 xl:max-w-[1180px] z-1">
-                …
-                <div
-                  className="absolute -right-16 top-[9px] w-[282px] h-[399px]
-                 md:w-[294px] md:h-[418px] md:top-[18px]
-                 xl:w-[580px] xl:h-[831px] xl:-right-10 xl:top-[127px]
-                 bg-no-repeat bg-cover xl:bg-auto rounded-2xl shadow-lg overflow-hidden "
-                  style={{
-                    backgroundImage: `url(${MinhaFoto})`,
-                  }}
-                  aria-label="Foto personalizada de fundo"
-                  role="img"
-                ></div>
-              </div>
-              <div
-                class="text-md full max-w-[225px] max-h-8 px-4 md:px-6 rounded-full relative md:max-w-[305px] md:max-h-10 md:text-base"
-                href=""
-                data-testid="ad-register-intended"
-              >
-                <div class="flex items-center justify-center h-full w-full">
-                  Cadastre como acompanhante
-                </div>
-              </div>
-              <div
-                class="outlined outlined--neutral text--md full max-w-[225px] max-h-8 !px-4 md:!px-6 !rounded-full relative md:max-w-[305px] md:max-h-10 md:!text-base"
-                href=""
-                data-testid="ad-register-intended"
-              >
-                <div class="flex items-center justify-center h-full w-full">
-                  Cadastre-se como cliente
-                </div>
-              </div>
+  // Reset to defaults
+  const handleReset = () => {
+    if (confirm("Tem certeza que deseja resetar todas as configurações?")) {
+      localStorage.removeItem("siteSettings");
+      window.location.reload();
+    }
+  };
 
-              <div class="w-full h-full absolute top-0 left-0 md:left-1/2 md:-translate-x-2/4 md:max-w-[834px] xl:max-w-[1440px] overflow-hidden z-1">
-                <svg
-                  width="419"
-                  height="292"
-                  viewBox="0 0 692 482"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="bg-red absolute top-[17px] -left-[68px] xl:top-0 xl:-left-11 xxl:left-0 w-[419px] h-[292px] xl:w-[692px] xl:h-[482px]"
-                >
-                  <path
-                    opacity="0.05"
-                    d="M691.69 70.9926C689.764 48.4772 679.272 29.5369 660.492 14.7041C645.387 2.78714 626.379 -2.00499 605.495 0.809435C562.588 6.61577 507.414 45.7895 441.52 117.24C394.608 168.078 358.923 217.267 357.453 219.32L335.683 248.251L321.541 266.025C294.448 300.051 268.876 332.202 250.223 354.692L249.741 355.275C194.745 421.579 166.005 450.94 140.002 433.521C131.714 427.968 127.938 404.084 144.462 355.047C157.641 315.949 177.055 280.502 177.258 280.147L180.324 274.569C183.087 269.549 182.149 263.337 178.069 259.331L173.38 254.716C171.251 252.612 120.842 203.194 105.407 186.206C52.3116 127.737 43.061 93.2291 44.6577 74.5423C45.5701 63.9185 50.3094 55.5513 59.5853 48.1983C65.085 43.8625 71.6744 42.3919 80.3674 43.5583C141.751 51.8494 241.961 167.976 289.76 232.683C290.114 233.164 304.028 250.609 304.383 251.09L332.236 215.517C332.059 215.289 318.424 197.87 318.246 197.616C304.586 179.716 282.866 152.281 250.476 117.19C184.582 45.7642 129.408 6.59042 86.5006 0.78408C65.6425 -2.03034 46.6092 2.76178 31.5295 14.6787C12.7242 29.5369 2.23182 48.4772 0.305674 70.9926C-3.03974 110.318 21.0878 158.696 72.0546 214.756C84.0169 227.916 113.315 257.023 130.599 274.062C122.489 290.34 111.287 314.707 102.341 341.076C80.4434 405.782 84.5998 448.835 114.759 469.018C127.685 477.664 141.117 482 154.929 482C172.315 482 190.386 475.154 208.938 461.488C234.028 443.004 258.485 413.516 284.361 382.303L284.843 381.72C304.003 358.622 329.879 326.116 357.251 291.684L371.063 274.341L393.467 244.574L393.721 244.245C431.813 191.455 545.227 52.534 611.628 43.5329C620.296 42.3412 626.911 43.8372 632.411 48.1729C641.686 55.5006 646.451 63.8678 647.338 74.4916C648.935 93.153 639.684 127.687 586.589 186.105C571.154 203.093 520.745 252.51 518.565 254.665L513.902 259.229C509.822 263.236 508.909 269.448 511.646 274.468L514.713 280.071C514.916 280.426 534.329 315.898 547.508 354.971C564.058 404.033 560.256 427.917 551.969 433.445C526.016 450.864 497.251 421.503 442.254 355.199L441.773 354.616C434.879 346.299 414.959 321.578 403.377 307.201C402.895 306.593 388.753 287.678 388.297 287.12L360.444 322.693C360.926 323.277 375.118 342.192 375.625 342.825C385.104 354.616 400.209 373.353 407.153 381.72L407.635 382.303C433.536 413.541 457.993 443.029 483.058 461.488C516.132 485.854 548.319 488.389 577.237 469.018C607.371 448.835 611.552 405.782 589.655 341.076C580.303 313.464 568.265 287.83 561.397 274.062C578.681 257.023 607.979 227.916 619.941 214.756C670.908 158.696 695.061 110.318 691.69 70.9926Z"
-                    fill="#E25352"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-          </div>
+  const SuccessModal = () => (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl p-8 max-w-md text-center">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <FaCheck className="text-green-600 text-2xl" />
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className={`w-full flex justify-center px-4 py-6 shadow-md ${COLORS.bg}`}
-        >
-          <div
-            className={`flex items-center gap-3 ${COLORS.inputBg} rounded-full px-4 py-2 w-full max-w-2xl border ${COLORS.border}`}
-          >
-            <label htmlFor="search-input" className="sr-only">
-              Pesquisar
-            </label>
-            <input
-              id="search-input"
-              name="query"
-              type="search"
-              placeholder={placeholder}
-              className={`flex-1 px-4 py-3 rounded-full border ${COLORS.border} ${COLORS.primary} placeholder:${COLORS.muted} focus:outline-none focus:ring-2 focus:ring-rose-200`}
-            />
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Sucesso!</h2>
+        <p className="text-gray-600">{modalMessage}</p>
+      </div>
+    </div>
+  );
 
+  return (
+    <div
+      className={`${COLORS.bg} min-h-screen py-6 md:py-8 px-4 md:px-6 mt-16 md:mt-20`}
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <h1 className={`text-2xl md:text-4xl font-bold ${COLORS.title}`}>
+            Alterar Configurações
+          </h1>
+          <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
             <button
-              type="submit"
-              className={`flex items-center justify-center w-12 h-12 rounded-full ${COLORS.accent} ${COLORS.accentText} shadow-md hover:brightness-95 transition`}
-              aria-label="Pesquisar"
+              onClick={handleSave}
+              className={`flex items-center justify-center gap-2 px-4 md:px-6 py-2 md:py-3 ${COLORS.accent} ${COLORS.accentHover} text-white font-bold rounded-lg transition text-sm md:text-base`}
             >
-              <SearchIcon className="w-5 h-5" />
+              <FaSave /> <span className="hidden sm:inline">Salvar Tudo</span>
+            </button>
+            <button
+              onClick={handleReset}
+              className="flex items-center justify-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition text-sm md:text-base"
+            >
+              <FaTimes /> <span className="hidden sm:inline">Resetar</span>
             </button>
           </div>
-        </form>
-      </section>
+        </div>
+
+        {/* Tabs - Responsive */}
+        <div className="flex gap-2 md:gap-4 mb-8 overflow-x-auto pb-2 md:pb-4 scrollbar-hide">
+          {[
+            { id: "navbar", label: "Navbar" },
+            { id: "hero", label: "Hero" },
+            { id: "footer", label: "Footer" },
+            { id: "blog", label: "Blog" },
+            { id: "acompanhantes", label: "Acompanhantes" },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-3 md:px-6 py-2 md:py-3 font-bold rounded-lg transition whitespace-nowrap text-sm md:text-base ${
+                activeTab === tab.id
+                  ? `${COLORS.accent} text-white`
+                  : `${COLORS.card} ${COLORS.title} hover:bg-slate-700`
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Content */}
+        <div className={`${COLORS.card} rounded-2xl p-4 md:p-8 shadow-lg`}>
+          {/* Navbar Tab */}
+          {activeTab === "navbar" && (
+            <div className="space-y-4 md:space-y-6">
+              <h2
+                className={`text-xl md:text-2xl font-bold ${COLORS.title} mb-4 md:mb-6`}
+              >
+                Configurações da Navbar
+              </h2>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Logo/Nome
+                </label>
+                <input
+                  type="text"
+                  value={navbar.logo}
+                  onChange={(e) =>
+                    setNavbar({ ...navbar, logo: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              {/* Logo Image URL */}
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Imagem do Logo (URL)
+                </label>
+                <input
+                  type="text"
+                  value={navbar.logoImage}
+                  onChange={(e) =>
+                    setNavbar({ ...navbar, logoImage: e.target.value })
+                  }
+                  placeholder="https://.../logo.png"
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+                {navbar.logoImage && (
+                  <div className="mt-3">
+                    <img
+                      src={navbar.logoImage}
+                      alt="Logo preview"
+                      className="h-12 object-contain"
+                      onError={(e) => (e.currentTarget.style.display = "none")}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Layout selection grid */}
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-3 text-sm md:text-base`}
+                >
+                  Layout da Navbar
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    {
+                      id: "layout-1",
+                      title: "Logo Esquerda",
+                      desc: "Logo à esquerda, menu à direita",
+                    },
+                    {
+                      id: "layout-2",
+                      title: "Logo Centro",
+                      desc: "Logo centralizado",
+                    },
+                    {
+                      id: "layout-3",
+                      title: "Logo + Botão",
+                      desc: "Logo à esquerda, menu + CTA à direita",
+                    },
+                    {
+                      id: "layout-4",
+                      title: "Logo Pequeno",
+                      desc: "Logo pequeno e links compactos",
+                    },
+                  ].map((l) => (
+                    <button
+                      key={l.id}
+                      onClick={() => setNavbar({ ...navbar, layout: l.id })}
+                      className={`p-3 rounded-lg border transition text-left flex flex-col items-start gap-2 ${
+                        navbar.layout === l.id
+                          ? "border-rose-500 bg-rose-50"
+                          : "border-slate-700 bg-slate-800"
+                      }`}
+                    >
+                      <div className="font-bold text-sm md:text-base text-white">
+                        {l.title}
+                      </div>
+                      <div className="text-xs text-white/70">{l.desc}</div>
+                      <div className="mt-2 w-full h-10 bg-slate-900 rounded flex items-center justify-center text-xs text-white/50">
+                        Preview
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Texto do Botão
+                </label>
+                <input
+                  type="text"
+                  value={navbar.buttonText}
+                  onChange={(e) =>
+                    setNavbar({ ...navbar, buttonText: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Link do Botão
+                </label>
+                <input
+                  type="text"
+                  value={navbar.buttonHref}
+                  onChange={(e) =>
+                    setNavbar({ ...navbar, buttonHref: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-3 text-sm md:text-base`}
+                >
+                  Links de Menu
+                </label>
+                <div className="space-y-2 md:space-y-3">
+                  {navbar.links.map((link, idx) => (
+                    <div
+                      key={idx}
+                      className="flex flex-col md:flex-row gap-2 md:gap-3"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Rótulo"
+                        value={link.label}
+                        onChange={(e) => {
+                          const newLinks = [...navbar.links];
+                          newLinks[idx].label = e.target.value;
+                          setNavbar({ ...navbar, links: newLinks });
+                        }}
+                        className="flex-1 px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                      />
+                      <input
+                        type="text"
+                        placeholder="URL"
+                        value={link.href}
+                        onChange={(e) => {
+                          const newLinks = [...navbar.links];
+                          newLinks[idx].href = e.target.value;
+                          setNavbar({ ...navbar, links: newLinks });
+                        }}
+                        className="flex-1 px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Hero Tab */}
+          {activeTab === "hero" && (
+            <div className="space-y-4 md:space-y-6">
+              <h2
+                className={`text-xl md:text-2xl font-bold ${COLORS.title} mb-4 md:mb-6`}
+              >
+                Configurações do Hero
+              </h2>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Título
+                </label>
+                <input
+                  type="text"
+                  value={hero.title}
+                  onChange={(e) => setHero({ ...hero, title: e.target.value })}
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Subtítulo
+                </label>
+                <textarea
+                  value={hero.subtitle}
+                  onChange={(e) =>
+                    setHero({ ...hero, subtitle: e.target.value })
+                  }
+                  rows="3"
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none resize-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Texto do CTA (Call to Action)
+                </label>
+                <input
+                  type="text"
+                  value={hero.cta}
+                  onChange={(e) => setHero({ ...hero, cta: e.target.value })}
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Link do CTA
+                </label>
+                <input
+                  type="text"
+                  value={hero.ctaHref}
+                  onChange={(e) =>
+                    setHero({ ...hero, ctaHref: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Footer Tab */}
+          {activeTab === "footer" && (
+            <div className="space-y-4 md:space-y-6">
+              <h2
+                className={`text-xl md:text-2xl font-bold ${COLORS.title} mb-4 md:mb-6`}
+              >
+                Configurações do Footer
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <div>
+                  <label
+                    className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                  >
+                    Nome da Empresa
+                  </label>
+                  <input
+                    type="text"
+                    value={footer.company}
+                    onChange={(e) =>
+                      setFooter({ ...footer, company: e.target.value })
+                    }
+                    className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                  >
+                    Telefone
+                  </label>
+                  <input
+                    type="text"
+                    value={footer.phone}
+                    onChange={(e) =>
+                      setFooter({ ...footer, phone: e.target.value })
+                    }
+                    className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={footer.email}
+                    onChange={(e) =>
+                      setFooter({ ...footer, email: e.target.value })
+                    }
+                    className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                  >
+                    Endereço
+                  </label>
+                  <input
+                    type="text"
+                    value={footer.address}
+                    onChange={(e) =>
+                      setFooter({ ...footer, address: e.target.value })
+                    }
+                    className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Descrição
+                </label>
+                <textarea
+                  value={footer.description}
+                  onChange={(e) =>
+                    setFooter({ ...footer, description: e.target.value })
+                  }
+                  rows="3"
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none resize-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-3 text-sm md:text-base`}
+                >
+                  Links Sociais
+                </label>
+                <div className="space-y-2 md:space-y-3">
+                  {footer.socialLinks.map((social, idx) => (
+                    <div
+                      key={idx}
+                      className="flex flex-col md:flex-row gap-2 md:gap-3"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Nome"
+                        value={social.name}
+                        onChange={(e) => {
+                          const newSocial = [...footer.socialLinks];
+                          newSocial[idx].name = e.target.value;
+                          setFooter({ ...footer, socialLinks: newSocial });
+                        }}
+                        className="flex-1 px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                      />
+                      <input
+                        type="url"
+                        placeholder="URL"
+                        value={social.url}
+                        onChange={(e) => {
+                          const newSocial = [...footer.socialLinks];
+                          newSocial[idx].url = e.target.value;
+                          setFooter({ ...footer, socialLinks: newSocial });
+                        }}
+                        className="flex-1 px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Blog Tab */}
+          {activeTab === "blog" && (
+            <div className="space-y-4 md:space-y-6">
+              <h2
+                className={`text-xl md:text-2xl font-bold ${COLORS.title} mb-4 md:mb-6`}
+              >
+                Configurações do Blog
+              </h2>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Título da Seção
+                </label>
+                <input
+                  type="text"
+                  value={blog.title}
+                  onChange={(e) => setBlog({ ...blog, title: e.target.value })}
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Subtítulo
+                </label>
+                <input
+                  type="text"
+                  value={blog.subtitle}
+                  onChange={(e) =>
+                    setBlog({ ...blog, subtitle: e.target.value })
+                  }
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Posts por Página
+                </label>
+                <input
+                  type="number"
+                  value={blog.postsPerPage}
+                  onChange={(e) =>
+                    setBlog({ ...blog, postsPerPage: parseInt(e.target.value) })
+                  }
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  id="enableComments"
+                  checked={blog.enableComments}
+                  onChange={(e) =>
+                    setBlog({ ...blog, enableComments: e.target.checked })
+                  }
+                  className="w-5 h-5 cursor-pointer"
+                />
+                <label
+                  htmlFor="enableComments"
+                  className={`${COLORS.muted} font-semibold cursor-pointer text-sm md:text-base`}
+                >
+                  Ativar Comentários
+                </label>
+              </div>
+            </div>
+          )}
+
+          {/* Acompanhantes Tab */}
+          {activeTab === "acompanhantes" && (
+            <div className="space-y-4 md:space-y-6">
+              <h2
+                className={`text-xl md:text-2xl font-bold ${COLORS.title} mb-4 md:mb-6`}
+              >
+                Configurações de Acompanhantes
+              </h2>
+
+              <div>
+                <label
+                  className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                >
+                  Título da Seção
+                </label>
+                <input
+                  type="text"
+                  value={acompanhantes.title}
+                  onChange={(e) =>
+                    setAcompanhantes({
+                      ...acompanhantes,
+                      title: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <div>
+                  <label
+                    className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                  >
+                    Items por Página
+                  </label>
+                  <input
+                    type="number"
+                    value={acompanhantes.itemsPerPage}
+                    onChange={(e) =>
+                      setAcompanhantes({
+                        ...acompanhantes,
+                        itemsPerPage: parseInt(e.target.value),
+                      })
+                    }
+                    className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    className={`block ${COLORS.muted} font-semibold mb-2 text-sm md:text-base`}
+                  >
+                    Colunas no Grid (Desktop)
+                  </label>
+                  <input
+                    type="number"
+                    value={acompanhantes.gridColumns}
+                    onChange={(e) =>
+                      setAcompanhantes({
+                        ...acompanhantes,
+                        gridColumns: parseInt(e.target.value),
+                      })
+                    }
+                    className="w-full px-3 md:px-4 py-2 bg-slate-700 text-white rounded-lg border border-slate-600 focus:border-rose-500 focus:outline-none text-sm md:text-base"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="enableFilters"
+                    checked={acompanhantes.enableFilters}
+                    onChange={(e) =>
+                      setAcompanhantes({
+                        ...acompanhantes,
+                        enableFilters: e.target.checked,
+                      })
+                    }
+                    className="w-5 h-5 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="enableFilters"
+                    className={`${COLORS.muted} font-semibold cursor-pointer text-sm md:text-base`}
+                  >
+                    Ativar Filtros
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="enableRating"
+                    checked={acompanhantes.enableRating}
+                    onChange={(e) =>
+                      setAcompanhantes({
+                        ...acompanhantes,
+                        enableRating: e.target.checked,
+                      })
+                    }
+                    className="w-5 h-5 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="enableRating"
+                    className={`${COLORS.muted} font-semibold cursor-pointer text-sm md:text-base`}
+                  >
+                    Ativar Sistema de Avaliação
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {showModal && <SuccessModal />}
     </div>
   );
 }

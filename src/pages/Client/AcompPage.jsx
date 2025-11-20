@@ -12,9 +12,8 @@ export default function AcompPage() {
       <NavbarBottom />
       <Navbar />
       <BannerCarousel />
-      <Filtro />
-      <Acompanhantes />
-      <Footer />    
+        <Acompanhantes />
+      <Footer />
     </>
   );
 }

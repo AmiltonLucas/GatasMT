@@ -19,7 +19,7 @@ import CadastroProdutoPage from "./Pages/Admin/Dashboard/CadastroProdutos";
 import EditarProdutoPage from "./Pages/Admin/Dashboard/EditarAcompanhante";
 import ClientesAdminPage from "./Pages/Admin/Dashboard/Clientes";
 import BlogAdiminPage from "./Pages/Admin/Dashboard/Blog";
-import AlterarGeralPage from "./pages/Admin/Dashboard/AlterarGeralPage";
+import AlterarAdminPage from "./pages/Admin/Dashboard/AlterarAdminPage";
 
 export default function AppRouter() {
   return (
@@ -41,13 +41,13 @@ export default function AppRouter() {
         <Route path="/admindash" element={<DashboardAdminPage />} />
         <Route path="/admin-acompanhantes" element={<ProdutosAdminPage />} />
         <Route path="/admin-blog" element={<BlogAdiminPage />} />
-        <Route path="/admin/alterar" element={<AlterarGeralPage />} />
         <Route path="/clientes" element={<ClientesAdminPage />} />
         <Route path="/cadastro-produto" element={<CadastroProdutoPage />} />
         <Route
           path="/editar-acompanhante/:id"
           element={<EditarProdutoPage />}
         />
+        <Route path="/admin/alterar" element={<AlterarAdminPage />} />
       </Routes>
     </Router>
   );
