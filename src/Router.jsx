@@ -20,6 +20,12 @@ import EditarProdutoPage from "./Pages/Admin/Dashboard/EditarAcompanhante";
 import ClientesAdminPage from "./Pages/Admin/Dashboard/Clientes";
 import BlogAdiminPage from "./Pages/Admin/Dashboard/Blog";
 import AlterarAdminPage from "./pages/Admin/Dashboard/AlterarAdminPage";
+import AlterarNavbarPage from "./pages/Admin/Dashboard/AlterarNavbarPage";
+import AlterarHeroPage from "./pages/Admin/Dashboard/AlterarHeroPage";
+import AlterarFooterPage from "./pages/Admin/Dashboard/AlterarFooterPage";
+import AlterarContatoPage from "./pages/Admin/Dashboard/AlterarContatoPage";
+import AlterarBlogPage from "./pages/Admin/Dashboard/AlterarBlogPage";
+import AlterarAcompanhantesPage from "./pages/Admin/Dashboard/AlterarAcompanhantesPage";
 
 export default function AppRouter() {
   return (
@@ -48,6 +54,12 @@ export default function AppRouter() {
           element={<EditarProdutoPage />}
         />
         <Route path="/admin/alterar" element={<AlterarAdminPage />} />
+        <Route path="/admin/alterar-navbar" element={<AlterarNavbarPage />} />
+        <Route path="/admin/alterar-hero" element={<AlterarHeroPage />} />
+        <Route path="/admin/alterar-footer" element={<AlterarFooterPage />} />
+        <Route path="/admin/alterar-contato" element={<AlterarContatoPage />} />
+        <Route path="/admin/alterar-blog" element={<AlterarBlogPage />} />
+        <Route path="/admin/alterar-acompanhantes" element={<AlterarAcompanhantesPage />} />
       </Routes>
     </Router>
   );
