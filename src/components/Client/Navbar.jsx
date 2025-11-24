@@ -3,7 +3,7 @@ import logo from "../../assets/LogoTB.png";
 import { useState } from "react";
 import { Menu, X, Bell, Globe } from "lucide-react";
 import { CiLogin } from "react-icons/ci";
-import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaPhone } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 import { IoPersonCircleOutline } from "react-icons/io5";
 
@@ -58,10 +58,20 @@ export default function Navbar() {
           >
             LOGIN <CiLogin className="w-5 h-5 inline-block m-auto" />
           </a>
-          <a className="px-3 py-2 font-semibold" href="/perfil">
-            Perfil{" "}
-            <IoPersonCircleOutline className="w-5 h-5 inline-block mr-2" />
-          </a>
+            <a className="px-3 py-2 font-semibold" href="/perfil">
+              Perfil{" "}
+              <IoPersonCircleOutline className="w-5 h-5 inline-block mr-2" />
+            </a>
+            <a className="px-3 py-2 font-semibold" href="/acompanhantes">
+              Acompanhantes {" "}
+            </a>
+            <a className="px-3 py-2 font-semibold" href="/sobrenos">
+              Sobre nós{" "}
+            </a>
+            <a className="px-3 py-2 font-semibold" href="/contato">
+              Contato{" "}
+              <FaPhone className="w-5 h-5 inline-block mr-2" />
+            </a>
           <button
             className="px-3 py-2 rounded-md bg-white/5"
             aria-label="Idioma"

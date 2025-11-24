@@ -131,9 +131,11 @@ export default function SidebarMenu() {
     { label: "Alterar Navbar", href: "/admin/alterar-navbar" },
     { label: "Alterar Hero", href: "/admin/alterar-hero" },
     { label: "Alterar Footer", href: "/admin/alterar-footer" },
+    { label: "Alterar Contato", href: "/admin/alterar-contato" },
     { label: "Alterar Blog", href: "/admin/alterar-blog" },
     { label: "Alterar Acompanhantes", href: "/admin/alterar-acompanhantes" },
-    { label: "Alterar Destacados", href: "/admin/alterar-destacados" },
+    { label: "Alterar Contato info", href: "/admin/alterar-contatoinfo" },
+    { label: "Alterar Sobre nós", href: "/admin/alterar-sobrenos" },
   ];
 
   // Conteúdo do menu

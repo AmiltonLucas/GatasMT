@@ -26,6 +26,10 @@ import AlterarFooterPage from "./pages/Admin/Dashboard/AlterarFooterPage";
 import AlterarContatoPage from "./pages/Admin/Dashboard/AlterarContatoPage";
 import AlterarBlogPage from "./pages/Admin/Dashboard/AlterarBlogPage";
 import AlterarAcompanhantesPage from "./pages/Admin/Dashboard/AlterarAcompanhantesPage";
+import ContatoPage from "./pages/Client/ContatoPage";
+import SobrenosPage from "./pages/Client/SobrenosPage";
+import AlterarContatoInfoPage from "./pages/Admin/Dashboard/AlterarContatoInfo";
+import AlterarSobrenosPage from "./pages/Admin/Dashboard/AlterarSobrenosPage";
 
 export default function AppRouter() {
   return (
@@ -33,6 +37,8 @@ export default function AppRouter() {
       <Routes>
         <Route path="*" element={<Error404 />} />
         <Route path="/" element={<Home />} />
+        <Route path="/contato" element={<ContatoPage />} />
+        <Route path="/sobrenos" element={<SobrenosPage/>} />
         <Route path="/melhores-avaliadas" element={<TopAvaliadasPage />} />
         <Route path="/acompanhantes" element={<AcompPage />} />
         <Route path="/acompanhantes/perfil" element={<AcompPerfilPage />} />
@@ -60,6 +66,8 @@ export default function AppRouter() {
         <Route path="/admin/alterar-contato" element={<AlterarContatoPage />} />
         <Route path="/admin/alterar-blog" element={<AlterarBlogPage />} />
         <Route path="/admin/alterar-acompanhantes" element={<AlterarAcompanhantesPage />} />
+        <Route path="/admin/alterar-contatoinfo" element={<AlterarContatoInfoPage />} />
+        <Route path="/admin/alterar-sobrenos" element={<AlterarSobrenosPage />} />
       </Routes>
     </Router>
   );
